@@ -137,6 +137,10 @@ class _DinoRunScreenState extends State<DinoRunScreen> {
   void dispose() {
     // TODO: implement dispose
     print("Md Sakibul Hasan");
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 
