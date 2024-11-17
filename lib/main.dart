@@ -141,7 +141,6 @@ class _DinoRunScreenState extends State<DinoRunScreen> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    AudioManager.instance.stopBgm();
     super.dispose();
   }
 
@@ -152,7 +151,6 @@ class _DinoRunScreenState extends State<DinoRunScreen> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-
     return FutureBuilder(
       future: initHive(),
       builder: (context, snapshot) {
