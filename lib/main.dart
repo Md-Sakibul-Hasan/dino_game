@@ -141,6 +141,7 @@ class _DinoRunScreenState extends State<DinoRunScreen> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    AudioManager.instance.stopBgm();
     super.dispose();
   }
 
