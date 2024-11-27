@@ -141,6 +141,7 @@ class _DinoRunScreenState extends State<DinoRunScreen> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    AudioManager.instance.stopBgm();
     super.dispose();
   }
 
@@ -176,11 +177,6 @@ class DinoRunApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        SystemChrome.setPreferredOrientations([
-          DeviceOrientation.portraitUp,
-          DeviceOrientation.portraitDown,
-        ]);
-        AudioManager.instance.stopBgm();
         return true; // Allow the pop action
       },
       child: MaterialApp(
