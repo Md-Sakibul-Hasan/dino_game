@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../ebs/post_repository/ebs_post_repo.dart';
 import '/widgets/hud.dart';
 import '/game/dino_run.dart';
 import '/widgets/main_menu.dart';
@@ -16,8 +18,9 @@ class PauseMenu extends StatelessWidget {
 
   // Reference to parent game.
   final DinoRun game;
+  final String userId;
 
-  const PauseMenu(this.game, {super.key});
+  const PauseMenu(this.game, {super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -67,37 +70,85 @@ class PauseMenu extends StatelessWidget {
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        game.overlays.remove(PauseMenu.id);
-                        game.overlays.add(Hud.id);
-                        game.resumeEngine();
-                        game.reset();
-                        game.startGamePlay();
-                        AudioManager.instance.resumeBgm();
+                    Selector<PlayerData, int>(
+                      selector: (_, playerData) => playerData.currentScore,
+                      builder: (_, score, __) {
+                        return ElevatedButton(
+                          onPressed: () async {
+                            game.overlays.remove(PauseMenu.id);
+                            game.overlays.add(Hud.id);
+                            game.resumeEngine();
+                            game.reset();
+                            game.startGamePlay();
+                            AudioManager.instance.resumeBgm();
+                            await EbsPostRepo.postScoreData(gameScore: score, userId: userId);
+                          },
+                          child: const Text(
+                            'Restart',
+                            style: TextStyle(
+                              fontSize: 30,
+                            ),
+                          ),
+                        );
                       },
-                      child: const Text(
-                        'Restart',
-                        style: TextStyle(
-                          fontSize: 30,
-                        ),
-                      ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        game.overlays.remove(PauseMenu.id);
-                        game.overlays.add(MainMenu.id);
-                        game.resumeEngine();
-                        game.reset();
-                        AudioManager.instance.resumeBgm();
+                    // ElevatedButton(
+                    //   onPressed: () async {
+                    //     game.overlays.remove(PauseMenu.id);
+                    //     game.overlays.add(Hud.id);
+                    //     game.resumeEngine();
+                    //     game.reset();
+                    //     game.startGamePlay();
+                    //     AudioManager.instance.resumeBgm();
+                    //     await EbsPostRepo.postScoreData(gameScore: score, userId: userId);
+                    //
+                    //   },
+                    //   child: const Text(
+                    //     'Restart',
+                    //     style: TextStyle(
+                    //       fontSize: 30,
+                    //     ),
+                    //   ),
+                    // ),
+                    Selector<PlayerData, int>(
+                      selector: (_, playerData) => playerData.currentScore,
+                      builder: (_, score, __) {
+                        return ElevatedButton(
+                          onPressed: () async {
+                            game.overlays.remove(PauseMenu.id);
+                            game.overlays.add(MainMenu.id);
+                            game.resumeEngine();
+                            game.reset();
+                            AudioManager.instance.resumeBgm();
+                            await EbsPostRepo.postScoreData(gameScore: score, userId: userId);
+
+                          },
+                          child: const Text(
+                            'Exit',
+                            style: TextStyle(
+                              fontSize: 30,
+                            ),
+                          ),
+                        );
                       },
-                      child: const Text(
-                        'Exit',
-                        style: TextStyle(
-                          fontSize: 30,
-                        ),
-                      ),
                     ),
+                    // ElevatedButton(
+                    //   onPressed: () async {
+                    //     game.overlays.remove(PauseMenu.id);
+                    //     game.overlays.add(MainMenu.id);
+                    //     game.resumeEngine();
+                    //     game.reset();
+                    //     AudioManager.instance.resumeBgm();
+                    //     await EbsPostRepo.postScoreData(gameScore: score, userId: userId);
+                    //
+                    //   },
+                    //   child: const Text(
+                    //     'Exit',
+                    //     style: TextStyle(
+                    //       fontSize: 30,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

@@ -125,8 +125,8 @@ Future<void> initHive() async {
 
 // This is the main widget for the game, modified to make `DinoRunApp` reusable.
 class DinoRunScreen extends StatefulWidget {
-  const DinoRunScreen({Key? key}) : super(key: key);
-
+  const DinoRunScreen({Key? key, required this.userId}) : super(key: key);
+  final String userId;
   @override
   State<DinoRunScreen> createState() => _DinoRunScreenState();
 }
@@ -156,7 +156,7 @@ class _DinoRunScreenState extends State<DinoRunScreen> {
       future: initHive(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return const DinoRunApp();
+          return  DinoRunApp(userId:widget.userId ,);
         } else {
           return const Scaffold(
             body: Center(
@@ -171,8 +171,8 @@ class _DinoRunScreenState extends State<DinoRunScreen> {
 
 // The main game widget with a controlled loading and overlay setup.
 class DinoRunApp extends StatelessWidget {
-  const DinoRunApp({Key? key}) : super(key: key);
-
+  const DinoRunApp({Key? key, this.userId}) : super(key: key);
+  final String? userId;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -203,9 +203,9 @@ class DinoRunApp extends StatelessWidget {
             ),
             overlayBuilderMap: {
               MainMenu.id: (_, game) => MainMenu(game),
-              PauseMenu.id: (_, game) => PauseMenu(game),
+              PauseMenu.id: (_, game) => PauseMenu(game, userId: userId??'1756',),
               Hud.id: (_, game) => Hud(game),
-              GameOverMenu.id: (_, game) => GameOverMenu(game),
+              GameOverMenu.id: (_, game) => GameOverMenu(game, userId: userId??'1756',),
               SettingsMenu.id: (_, game) => SettingsMenu(game),
             },
             initialActiveOverlays: const [MainMenu.id],
